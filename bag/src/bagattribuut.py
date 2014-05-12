@@ -443,6 +443,7 @@ class BAGpoint(BAGgeoAttribuut):
                         gmlStr = etree.tostring(gmlNode)
                         self._geometrie = ogr.CreateGeometryFromGML(str(gmlStr))
                         self._geometrie = self._geometrie.Centroid()
+                        self._geometrie.CloseRings()
         except:
             Log.log.error("ik kan hier echt geen POINT van maken: %s (en zet dit op 0,0,0)" % str(point.text))
             # self._waarde = "POINT(0 0 0)"
@@ -466,6 +467,7 @@ class BAGpolygoon(BAGgeoAttribuut):
             if gmlNode is not None:
                 gmlStr = etree.tostring(gmlNode)
                 self._geometrie = ogr.CreateGeometryFromGML(str(gmlStr))
+                self._geometrie.CloseRings()
 
 #--------------------------------------------------------------------------------------------------------
 # Class         BAGmultiPolygoon
@@ -503,6 +505,8 @@ class BAGmultiPolygoon(BAGpolygoon):
 
         if self._geometrie is None:
             Log.log.warn("Null geometrie in BAGmultiPolygoon: tag=%s identificatie=%s" % (self._tag, self._parentObj.identificatie()))
+        else:
+            self._geometrie.CloseRings()
 
 #--------------------------------------------------------------------------------------------------------
 # Class         BAGgeometrieValidatie

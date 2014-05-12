@@ -46,7 +46,7 @@ DROP TYPE IF EXISTS woonplaatsStatus;
 CREATE TYPE woonplaatsStatus AS ENUM ('Woonplaats aangewezen', 'Woonplaats ingetrokken');
 CREATE TABLE woonplaats (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -76,7 +76,7 @@ DROP TYPE IF EXISTS openbareRuimteType;
 CREATE TYPE openbareRuimteType AS ENUM ('Weg', 'Water', 'Spoorbaan', 'Terrein', 'Kunstwerk', 'Landschappelijk gebied', 'Administratief gebied');
 CREATE TABLE openbareruimte (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -88,7 +88,7 @@ CREATE TABLE openbareruimte (
   openbareRuimteNaam VARCHAR(80),
   openbareRuimteStatus openbareRuimteStatus,
   openbareRuimteType openbareRuimteType,
-  gerelateerdeWoonplaats NUMERIC(16),
+  gerelateerdeWoonplaats VARCHAR,
   verkorteOpenbareRuimteNaam VARCHAR(80),
   PRIMARY KEY (gid)
 );
@@ -100,7 +100,7 @@ DROP TYPE IF EXISTS typeAdresseerbaarObject;
 CREATE TYPE typeAdresseerbaarObject AS ENUM ('Verblijfsobject', 'Standplaats', 'Ligplaats');
 CREATE TABLE nummeraanduiding (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -115,8 +115,8 @@ CREATE TABLE nummeraanduiding (
   postcode VARCHAR(6),
   nummeraanduidingStatus nummeraanduidingStatus,
   typeAdresseerbaarObject typeAdresseerbaarObject,
-  gerelateerdeOpenbareRuimte NUMERIC(16),
-  gerelateerdeWoonplaats NUMERIC(16),
+  gerelateerdeOpenbareRuimte VARCHAR,
+  gerelateerdeWoonplaats VARCHAR,
   PRIMARY KEY (gid)
 );
 
@@ -125,7 +125,7 @@ DROP TYPE IF EXISTS ligplaatsStatus;
 CREATE TYPE ligplaatsStatus AS ENUM ('Plaats aangewezen', 'Plaats ingetrokken');
 CREATE TABLE ligplaats (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -134,7 +134,7 @@ CREATE TABLE ligplaats (
   einddatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
   documentnummer VARCHAR(20),
   documentdatum DATE,
-  hoofdadres NUMERIC(16),
+  hoofdadres VARCHAR,
   ligplaatsStatus ligplaatsStatus,
   geom_valid BOOLEAN,
   geovlak geometry,
@@ -152,7 +152,7 @@ DROP TYPE IF EXISTS standplaatsStatus;
 CREATE TYPE standplaatsStatus AS ENUM ('Plaats aangewezen', 'Plaats ingetrokken');
 CREATE TABLE standplaats (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -161,7 +161,7 @@ CREATE TABLE standplaats (
   einddatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
   documentnummer VARCHAR(20),
   documentdatum DATE,
-  hoofdadres NUMERIC(16),
+  hoofdadres VARCHAR,
   standplaatsStatus standplaatsStatus,
   geom_valid BOOLEAN,
   geovlak geometry,
@@ -179,7 +179,7 @@ DROP TYPE IF EXISTS verblijfsobjectStatus;
 CREATE TYPE verblijfsobjectStatus AS ENUM ('Verblijfsobject gevormd', 'Niet gerealiseerd verblijfsobject', 'Verblijfsobject in gebruik (niet ingemeten)', 'Verblijfsobject in gebruik', 'Verblijfsobject ingetrokken', 'Verblijfsobject buiten gebruik');
 CREATE TABLE verblijfsobject (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -188,7 +188,7 @@ CREATE TABLE verblijfsobject (
   einddatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
   documentnummer VARCHAR(20),
   documentdatum DATE,
-  hoofdadres NUMERIC(16),
+  hoofdadres VARCHAR,
   verblijfsobjectStatus verblijfsobjectStatus,
   oppervlakteVerblijfsobject NUMERIC(6),
   geom_valid BOOLEAN,
@@ -215,7 +215,7 @@ DROP TYPE IF EXISTS pandStatus;
 CREATE TYPE pandStatus AS ENUM ('Bouwvergunning verleend', 'Niet gerealiseerd pand', 'Bouw gestart', 'Pand in gebruik (niet ingemeten)', 'Pand in gebruik', 'Sloopvergunning verleend', 'Pand gesloopt', 'Pand buiten gebruik');
 CREATE TABLE pand (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   officieel BOOLEAN,
@@ -249,12 +249,12 @@ CREATE TABLE pand (
 DROP TABLE IF EXISTS verblijfsobjectpand CASCADE;
 CREATE TABLE verblijfsobjectpand (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   begindatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
   einddatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
-  gerelateerdpand NUMERIC(16),
+  gerelateerdpand VARCHAR,
   PRIMARY KEY (gid)
 );
 
@@ -263,12 +263,12 @@ CREATE TABLE verblijfsobjectpand (
 DROP TABLE IF EXISTS adresseerbaarobjectnevenadres CASCADE;
 CREATE TABLE adresseerbaarobjectnevenadres (
   gid SERIAL,
-  identificatie NUMERIC(16),
+  identificatie VARCHAR NOT NULL,
   aanduidingRecordInactief BOOLEAN,
   aanduidingRecordCorrectie INTEGER,
   begindatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
   einddatumTijdvakGeldigheid TIMESTAMP WITHOUT TIME ZONE,
-  nevenadres NUMERIC(16),
+  nevenadres VARCHAR,
   PRIMARY KEY (gid)
 );
 
@@ -281,7 +281,7 @@ CREATE TYPE gebruiksdoelVerblijfsobject AS ENUM (
 );
 CREATE TABLE verblijfsobjectgebruiksdoel (
   gid serial,
-  identificatie numeric(16,0),
+  identificatie VARCHAR NOT NULL,
   aanduidingrecordinactief boolean,
   aanduidingrecordcorrectie integer,
   begindatumtijdvakgeldigheid timestamp without time zone,
@@ -337,8 +337,8 @@ CREATE TABLE gemeente_woonplaats (
   gid serial,
   begindatumtijdvakgeldigheid TIMESTAMP WITHOUT TIME ZONE,
   einddatumtijdvakgeldigheid TIMESTAMP WITHOUT TIME ZONE,
-  woonplaatscode numeric(4),
-  gemeentecode numeric(4),
+  woonplaatscode VARCHAR,
+  gemeentecode VARCHAR,
   status gemeenteWoonplaatsStatus,
   PRIMARY KEY (gid)
 );
@@ -349,9 +349,9 @@ CREATE INDEX gem_wpl_gemeentecode_datum_idx ON gemeente_woonplaats USING btree (
 DROP TABLE IF EXISTS gemeente_provincie CASCADE;
 CREATE TABLE gemeente_provincie (
   gid serial,
-  gemeentecode numeric(4),
+  gemeentecode  VARCHAR,
   gemeentenaam character varying(80),
-  provinciecode numeric(4),
+  provinciecode  VARCHAR,
   provincienaam character varying(80),
   PRIMARY KEY (gid)
 );

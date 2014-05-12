@@ -326,9 +326,9 @@ class BAGdatetimeAttribuut(BAGattribuut):
                 # conversie naar ISO8601 notatie,
                 self._waarde = '%s-%s-%s %s:%s:%s.%s' % (jaar, maand, dag, uur, minuut, seconden, secfract)
             else:
-                self._waarde = None
+                self._waarde = 'infinity'
         else:
-            self._waarde = None
+            self._waarde = 'infinity'
 
 
 #--------------------------------------------------------------------------------------------------------

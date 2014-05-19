@@ -19,8 +19,7 @@ CREATE VIEW ligplaatsactueel AS
             ligplaats.geovlak
     FROM ligplaats
     WHERE
-      ligplaats.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-      AND (ligplaats.einddatumtijdvakgeldigheid is NULL OR ligplaats.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+      ( NOW() BETWEEN ligplaats.begindatumtijdvakgeldigheid AND ligplaats.einddatumtijdvakgeldigheid )
       AND ligplaats.aanduidingrecordinactief = FALSE
       AND ligplaats.geom_valid = TRUE;
 
@@ -41,8 +40,7 @@ CREATE VIEW ligplaatsactueelbestaand AS
             ligplaats.geovlak
     FROM ligplaats
     WHERE
-      ligplaats.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (ligplaats.einddatumtijdvakgeldigheid is NULL OR ligplaats.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN ligplaats.begindatumtijdvakgeldigheid AND ligplaats.einddatumtijdvakgeldigheid )
     AND ligplaats.aanduidingrecordinactief = FALSE
     AND ligplaats.geom_valid = TRUE
     AND ligplaats.ligplaatsstatus <> 'Plaats ingetrokken';
@@ -69,8 +67,7 @@ CREATE VIEW nummeraanduidingactueel AS
             nummeraanduiding.einddatumtijdvakgeldigheid
     FROM nummeraanduiding
     WHERE
-      nummeraanduiding.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-      AND (nummeraanduiding.einddatumtijdvakgeldigheid is NULL OR nummeraanduiding.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+      ( NOW() BETWEEN nummeraanduiding.begindatumtijdvakgeldigheid AND nummeraanduiding.einddatumtijdvakgeldigheid )
       AND nummeraanduiding.aanduidingrecordinactief = FALSE
       AND nummeraanduiding.postcode is NOT NULL;
 
@@ -96,8 +93,7 @@ CREATE VIEW nummeraanduidingactueelbestaand AS
             nummeraanduiding.einddatumtijdvakgeldigheid
   FROM nummeraanduiding
   WHERE
-    nummeraanduiding.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (nummeraanduiding.einddatumtijdvakgeldigheid is NULL OR nummeraanduiding.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN nummeraanduiding.begindatumtijdvakgeldigheid AND nummeraanduiding.einddatumtijdvakgeldigheid )
     AND nummeraanduiding.aanduidingrecordinactief = FALSE
     AND nummeraanduiding.postcode is NOT NULL
     AND nummeraanduiding.nummeraanduidingstatus <> 'Naamgeving ingetrokken';
@@ -122,9 +118,8 @@ CREATE VIEW openbareruimteactueel AS
             openbareruimte.einddatumtijdvakgeldigheid
   FROM openbareruimte
   WHERE
-    openbareruimte.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (openbareruimte.einddatumtijdvakgeldigheid is NULL OR openbareruimte.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
-    AND openbareruimte.aanduidingrecordinactief = FALSE;
+      ( NOW() BETWEEN openbareruimte.begindatumtijdvakgeldigheid AND openbareruimte.einddatumtijdvakgeldigheid )
+      AND openbareruimte.aanduidingrecordinactief = FALSE;
 
 DROP VIEW IF EXISTS openbareruimteactueelbestaand;
 CREATE VIEW openbareruimteactueelbestaand AS
@@ -145,8 +140,7 @@ CREATE VIEW openbareruimteactueelbestaand AS
             openbareruimte.einddatumtijdvakgeldigheid
   FROM openbareruimte
   WHERE
-    openbareruimte.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (openbareruimte.einddatumtijdvakgeldigheid is NULL OR openbareruimte.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN openbareruimte.begindatumtijdvakgeldigheid AND openbareruimte.einddatumtijdvakgeldigheid )
     AND openbareruimte.aanduidingrecordinactief = FALSE
     AND openbareruimte.openbareruimtestatus <> 'Naamgeving ingetrokken';
 
@@ -167,8 +161,7 @@ CREATE VIEW pandactueel AS
             pand.geovlak
     FROM pand
     WHERE
-      pand.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-      AND (pand.einddatumtijdvakgeldigheid is NULL OR pand.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+      ( NOW() BETWEEN pand.begindatumtijdvakgeldigheid AND pand.einddatumtijdvakgeldigheid )
       AND pand.aanduidingrecordinactief = FALSE
       AND pand.geom_valid = TRUE;
 
@@ -189,8 +182,7 @@ CREATE VIEW pandactueelbestaand AS
             pand.geovlak
   FROM pand
    WHERE
-     pand.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-     AND (pand.einddatumtijdvakgeldigheid is NULL OR pand.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+     ( NOW() BETWEEN pand.begindatumtijdvakgeldigheid AND pand.einddatumtijdvakgeldigheid )
      AND pand.aanduidingrecordinactief = FALSE
      AND pand.geom_valid = TRUE
      AND (pand.pandstatus <> 'Niet gerealiseerd pand' AND pand.pandstatus  <> 'Pand gesloopt' );
@@ -212,7 +204,7 @@ CREATE VIEW standplaatsactueel AS
             standplaats.geovlak
   FROM standplaats
   WHERE
-    standplaats.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
+    ( NOW() BETWEEN standplaats.begindatumtijdvakgeldigheid AND standplaats.einddatumtijdvakgeldigheid )
     AND (standplaats.einddatumtijdvakgeldigheid is NULL OR standplaats.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
     AND standplaats.aanduidingrecordinactief = FALSE
     AND standplaats.geom_valid = TRUE
@@ -235,8 +227,7 @@ CREATE VIEW standplaatsactueelbestaand AS
             standplaats.geovlak
   FROM standplaats
   WHERE
-    standplaats.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (standplaats.einddatumtijdvakgeldigheid is NULL OR standplaats.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN standplaats.begindatumtijdvakgeldigheid AND standplaats.einddatumtijdvakgeldigheid )
     AND standplaats.aanduidingrecordinactief = FALSE
     AND standplaats.geom_valid = TRUE
     AND standplaats.standplaatsstatus <> 'Plaats ingetrokken';
@@ -261,8 +252,7 @@ CREATE VIEW verblijfsobjectactueel AS
             verblijfsobject.geovlak
     FROM verblijfsobject
   WHERE
-    verblijfsobject.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (verblijfsobject.einddatumtijdvakgeldigheid is NULL OR verblijfsobject.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN verblijfsobject.begindatumtijdvakgeldigheid AND verblijfsobject.einddatumtijdvakgeldigheid )
     AND verblijfsobject.aanduidingrecordinactief = FALSE
     AND (verblijfsobject.geom_valid is NULL OR verblijfsobject.geom_valid = TRUE);
 
@@ -286,8 +276,7 @@ CREATE VIEW verblijfsobjectactueelbestaand AS
             verblijfsobject.geovlak
     FROM verblijfsobject
     WHERE
-      verblijfsobject.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-      AND (verblijfsobject.einddatumtijdvakgeldigheid is NULL OR verblijfsobject.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+      ( NOW() BETWEEN verblijfsobject.begindatumtijdvakgeldigheid AND verblijfsobject.einddatumtijdvakgeldigheid )
       AND verblijfsobject.aanduidingrecordinactief = FALSE
       AND (verblijfsobject.geom_valid is NULL OR verblijfsobject.geom_valid = TRUE)
       AND (verblijfsobject.verblijfsobjectstatus <> 'Niet gerealiseerd verblijfsobject'
@@ -310,8 +299,7 @@ CREATE VIEW woonplaatsactueel AS
             woonplaats.geovlak
     FROM woonplaats
   WHERE
-    woonplaats.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (woonplaats.einddatumtijdvakgeldigheid is NULL OR woonplaats.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN woonplaats.begindatumtijdvakgeldigheid AND woonplaats.einddatumtijdvakgeldigheid )
     AND woonplaats.aanduidingrecordinactief = FALSE
     AND woonplaats.geom_valid = TRUE;
 
@@ -332,8 +320,7 @@ CREATE VIEW woonplaatsactueelbestaand AS
             woonplaats.geovlak
     FROM woonplaats
   WHERE
-    woonplaats.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (woonplaats.einddatumtijdvakgeldigheid is NULL OR woonplaats.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN woonplaats.begindatumtijdvakgeldigheid AND woonplaats.einddatumtijdvakgeldigheid )
     AND woonplaats.aanduidingrecordinactief = FALSE
     AND woonplaats.geom_valid = TRUE
     AND woonplaats.woonplaatsstatus  <> 'Woonplaats ingetrokken';
@@ -349,8 +336,7 @@ CREATE VIEW verblijfsobjectpandactueel AS
             vbop.gerelateerdpand
     FROM verblijfsobjectpand as vbop
   WHERE
-    vbop.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (vbop.einddatumtijdvakgeldigheid is NULL OR vbop.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN vbop.begindatumtijdvakgeldigheid AND vbop.einddatumtijdvakgeldigheid )
     AND vbop.aanduidingrecordinactief = FALSE;
 
 DROP VIEW IF EXISTS adresseerbaarobjectnevenadresactueel;
@@ -364,7 +350,7 @@ CREATE VIEW adresseerbaarobjectnevenadresactueel AS
             aon.nevenadres
     FROM adresseerbaarobjectnevenadres as aon
   WHERE
-    aon.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
+    ( NOW() BETWEEN aon.begindatumtijdvakgeldigheid AND aon.einddatumtijdvakgeldigheid )
     AND (aon.einddatumtijdvakgeldigheid is NULL OR aon.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
     AND aon.aanduidingrecordinactief = FALSE;
 
@@ -379,8 +365,7 @@ CREATE VIEW verblijfsobjectgebruiksdoelactueel AS
             vog.gebruiksdoelverblijfsobject
     FROM verblijfsobjectgebruiksdoel as vog
   WHERE
-    vog.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (vog.einddatumtijdvakgeldigheid is NULL OR vog.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN vog.begindatumtijdvakgeldigheid AND vog.einddatumtijdvakgeldigheid )
     AND vog.aanduidingrecordinactief = FALSE;
 
 DROP VIEW IF EXISTS gemeente_woonplaatsactueelbestaand;
@@ -393,8 +378,7 @@ CREATE VIEW gemeente_woonplaatsactueelbestaand AS
             gw.status
     FROM gemeente_woonplaats as gw
   WHERE
-    gw.begindatumtijdvakgeldigheid <= LOCALTIMESTAMP
-    AND (gw.einddatumtijdvakgeldigheid is NULL OR gw.einddatumtijdvakgeldigheid >= LOCALTIMESTAMP)
+    ( NOW() BETWEEN gw.begindatumtijdvakgeldigheid AND gw.einddatumtijdvakgeldigheid )
     AND gw.status = 'definitief';
 
 ----------------------------------------------------------------------------------

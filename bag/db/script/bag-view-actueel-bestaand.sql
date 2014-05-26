@@ -68,8 +68,7 @@ CREATE VIEW nummeraanduidingactueel AS
     FROM nummeraanduiding
     WHERE
       ( NOW() BETWEEN nummeraanduiding.begindatumtijdvakgeldigheid AND nummeraanduiding.einddatumtijdvakgeldigheid )
-      AND nummeraanduiding.aanduidingrecordinactief = FALSE
-      AND nummeraanduiding.postcode is NOT NULL;
+      AND nummeraanduiding.aanduidingrecordinactief = FALSE;
 
 DROP VIEW IF EXISTS nummeraanduidingactueelbestaand;
 CREATE VIEW nummeraanduidingactueelbestaand AS
@@ -95,7 +94,6 @@ CREATE VIEW nummeraanduidingactueelbestaand AS
   WHERE
     ( NOW() BETWEEN nummeraanduiding.begindatumtijdvakgeldigheid AND nummeraanduiding.einddatumtijdvakgeldigheid )
     AND nummeraanduiding.aanduidingrecordinactief = FALSE
-    AND nummeraanduiding.postcode is NOT NULL
     AND nummeraanduiding.nummeraanduidingstatus <> 'Naamgeving ingetrokken';
 
 DROP VIEW IF EXISTS openbareruimteactueel;
